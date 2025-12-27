@@ -12,18 +12,18 @@ const Orders = () => {
     //     { id: 1, items: [{ product: { name: "Nike Air Max 270" }, quantity: 1 }], address: { firstName: "John", lastName: "Doe", street: "123 Main St", city: "New York", state: "NY", zipcode: "10001", country: "USA"}, amount: 320.0, paymentType: "Credit Card", orderDate: "10/10/2022", isPaid: true },
     // ];
 
-    const {currency, axios} = useAppContext()
+    const { currency, axios } = useAppContext()
     const [orders, setOrders] = useState([])
-    console.log(orders)
 
-    const fetchOrders = async() => {
+    const fetchOrders = async () => {
         // setOrders(dummyOrders)
         try {
-            const {data} = await axios.get('/api/orders/seller') 
-            if(data.success){
+            const { data } = await axios.get('/api/orders/seller')
+            console.log("Data coming for Orders: ", data)
+            if (data.success) {
                 setOrders(data.orders)
                 toast.success('Orders loaded successfully!')
-            }else{
+            } else {
                 toast.error(data.message)
             }
         } catch (error) {
@@ -52,7 +52,7 @@ const Orders = () => {
                                             <br />
                                             {/* {index < order.items.length - 1 && <br />} Adds <br> except after last item */}
                                         </p>
-                                        
+
                                     </div>
                                 ))}
                             </>
@@ -77,7 +77,7 @@ const Orders = () => {
                 ))}
             </div>
         </div>
-        
+
     );
 };
 

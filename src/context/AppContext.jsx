@@ -40,7 +40,6 @@ export const AppContextProvider = ({ children }) => {
     const fetchUser = async () => {
         try {
             const { data } = await axios.get('/api/user/is-auth')
-            console.log("Data: ", data)
             if (data.success) {
 
                 setUser(data.user)
@@ -133,8 +132,7 @@ export const AppContextProvider = ({ children }) => {
     useEffect(() => {
         const updateCart = async () => {
             try {
-                console.log("CartItems: ", cartItems)
-                console.log("User: ", user)
+
                 const { data } = await axios.post('/api/cart/update', { cartItems: cartItems, userId: user._id ? user._id : "694fc8983d53b0514bbd76c0" })
                 if (!data.success) {
                     toast.error(data.message)
