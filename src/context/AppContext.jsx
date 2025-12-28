@@ -6,6 +6,12 @@ import axios from 'axios'
 axios.defaults.withCredentials = true;
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
+// ✅ Add token to all requests from localStorage
+const token = localStorage.getItem('token')
+if (token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
+
 export const AppContext = createContext();
 
 export const AppContextProvider = ({ children }) => {
@@ -19,6 +25,18 @@ export const AppContextProvider = ({ children }) => {
     const [products, setProducts] = useState([])
     const [cartItems, setCartItems] = useState({})
     const [searchQuery, setSearchQuery] = useState('')
+
+    // ✅ Helper function to save token
+    const saveToken = (token) => {
+        localStorage.setItem('token', token)
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+    }
+
+    // ✅ Helper function to remove token
+    const removeToken = () => {
+        localStorage.removeItem('token')
+        delete axios.defaults.headers.common['Authorization']
+    }
 
     // Fetch seller status
     const fetchSeller = async () => {
@@ -126,9 +144,17 @@ export const AppContextProvider = ({ children }) => {
         return Math.floor(totalAmount * 100) / 100
     }
 
+
+    // ✅ Load token on mount
+    useEffect(() => {
+        const storedToken = localStorage.getItem('token')
+        if (storedToken) {
+            axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`
+            fetchUser()
+        }
+    }, [])
+    
     // Update cart items
-
-
     useEffect(() => {
         const updateCart = async () => {
             try {
@@ -154,7 +180,7 @@ export const AppContextProvider = ({ children }) => {
     }, [])
 
 
-    const value = { navigate, user, setUser, isSeller, setIsSeller, showUserLogin, setShowUserLogin, products, currency, addToCart, updateCartItem, removeFromCart, cartItems, setCartItems, searchQuery, setSearchQuery, getCartCount, getCartAmount, axios, fetchProducts }
+    const value = {saveToken, removeToken, navigate, user, setUser, isSeller, setIsSeller, showUserLogin, setShowUserLogin, products, currency, addToCart, updateCartItem, removeFromCart, cartItems, setCartItems, searchQuery, setSearchQuery, getCartCount, getCartAmount, axios, fetchProducts }
 
     return <AppContext.Provider value={value}>
         {children}
