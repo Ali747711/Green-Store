@@ -8,7 +8,7 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const { setShowUserLogin, setUser, navigate, axios } = useAppContext()
+    const { setShowUserLogin, setUser, navigate, axios, saveToken } = useAppContext()
 
     const handleSubmitForm = async (e) => {
         try {
@@ -18,6 +18,11 @@ const Login = () => {
             })
 
             if (data.success) {
+                // ✅ Save token to localStorage
+                if (data.token) {
+                    saveToken(data.token)
+                }
+                
                 navigate('/')
                 setUser(data.user)
                 // setCartItems(data.user.cartItems)
