@@ -145,7 +145,7 @@ const Cart = () => {
                         </div>
                         <div className='flex flex-row mx-auto'>
                             <p className="text-center">{currency}{product.offerPrice * product.quantity}</p>
-                            <img onClick={() => removeFromCart(product._id)} src={assets.remove_icon} alt="remove" className="inline-block w-6 h-6" />
+                            <img onClick={() => removeFromCart(product._id)} src={assets.remove_icon} alt="remove" className="inline-block w-6 h-6 ml-3" />
                         </div>
                         
                         <button onClick={() => removeFromCart(product._id)} className="cursor-pointer mx-auto hidden md:block">
